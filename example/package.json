@@ -1,0 +1,28 @@
+{
+  "name": "angular-carousel3d",
+  "version": "0.0.1",
+  "description": "3d carousel directive for angularjs",
+  "main": "example.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "serve-favicon": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FIlburtTurtle/Angular-Carousel3D.git"
+  },
+  "keywords": [
+    "angularjs",
+    "carousel"
+  ],
+  "author": "Rafael Ancheta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FIlburtTurtle/Angular-Carousel3D/issues"
+  },
+  "homepage": "https://github.com/FIlburtTurtle/Angular-Carousel3D#readme"
+}

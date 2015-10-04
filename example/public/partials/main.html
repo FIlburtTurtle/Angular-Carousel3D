@@ -1,0 +1,62 @@
+<div class="container" style="margin-top:50px">
+	<div class="row">
+
+		<!-- Sidepanel docs -->
+		<div class="col-md-4" style="z-index:1000">
+			<h1>Angular Carousel3D</h1>
+			<p>
+				An AngularJS carousel directive in 3D using HTML5 3D transformations. Meant to be lightweight and 
+				flexible for many projects. Just thought that the current 3D carousels were to rigid in the way they were built!
+			</p>
+			<hr  />
+			<!-- Functionality -->
+			<h4>Try if out by using some of its functionality below</h4>
+			<hr  />
+			<button class="btn btn-default" ng-click="rotate(1)">rotate forward</button>
+			<br  />
+			<br  />
+			<button class="btn btn-default" ng-click="rotate(-1)">rotate back</button>
+			<br  />
+			<br  />
+			<button class="btn btn-default" ng-click="toggleAxis()">flip axis</button>
+		</div>
+
+		<div class="col-md-8">
+			<!-- 3d Carousel directive -->
+			<!-- Options -->
+			<!-- Rotate : exposes the directive's rotate method to be used in the controllers scope -->
+			<!-- Rotateto : exposes the directives rotateto method which rotates to a specific index in the panels array -->
+			<!-- toggleAxis : exposes the toggle axis method to the controller which can be used to toggle the carousels axis -->
+			<!-- percentHeight : set the max height of the panels (0-1) -->
+			<carousel3d rotate="rotate" 
+						rotateto="rotateto" 
+						panels="panels" 
+						toggle-axis="toggleAxis" 
+						percent-height='.50'>
+			</carousel3d>
+
+			<!-- template for 3d carousel directive -->
+			<!-- create a script template with the id of panel.html to create a customized panel for the template -->
+			<script type="text/ng-template" id="panel.html">
+			    <div class="view">
+			        <h2>{{panel}}</h2>
+			    </div>
+			</script>
+		</div>
+			
+	</div>
+
+	<hr  />
+
+	<div class="row">
+		<div class="col-md-4">
+			<h3>Getting Started</h3>
+			<p>Please git clone or download the project at <a href="https://github.com/FIlburtTurtle/Angular-Carousel3D">https://github.com/FIlburtTurtle/Angular-Carousel3D</a>. Include the two scripts,  in the dist folder, angular-carousel3d.css and angular-carousel3d.js after your angularjs include. When instantiating your angular module include Carousel3D as a dependency to use the directive. </p>
+		</div>
+	</div>
+
+	<br  />
+	<br  />
+	<br  />
+	<br  />
+</div>

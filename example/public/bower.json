@@ -1,0 +1,9 @@
+{
+  "name": "Angular-Carousel3D",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "angular-route": "~1.4.6",
+    "AngularJS": "angular-latest#~1.4.6"
+  }
+}
