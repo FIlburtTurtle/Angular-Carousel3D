@@ -2,26 +2,148 @@
 	<div class="row">
 
 		<!-- Sidepanel docs -->
-		<div class="col-md-4" style="z-index:1000">
+		<div class="col-md-5 col-sm-12 panel panel-default" style="z-index:1000">
+
 			<h1>Angular Carousel3D</h1>
 			<p>
 				An AngularJS carousel directive in 3D using HTML5 3D transformations. Meant to be lightweight and 
 				flexible for many projects. Just thought that the current 3D carousels were to rigid in the way they were built!
 			</p>
 			<hr  />
-			<!-- Functionality -->
-			<h4>Try if out by using some of its functionality below</h4>
+
+			<!-- Example functionality -->
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-default" ng-click="rotate(-1)">
+					<span class="glyphicon glyphicon-menu-left"></span>
+				</button>
+				<button type="button" ng-click="toggleAxis()" class="btn btn-default">
+					Toggle
+				</button>
+				<button type="button" class="btn btn-default" ng-click="rotate(1)">
+					<span class="glyphicon glyphicon-menu-right"></span>
+				</button>
+			</div>
+
+			<button type="button" class="btn btn-default" ng-click="rotate(5);toggleAxis()">
+				Twirl!!!
+			</button>
+			<button type="button" class="btn btn-default" ng-click="toggleBackface()">
+				Backface!!!
+			</button>
+			<button type="button" class="btn btn-default" ng-click="addPanel()">
+				Add a panel
+			</button>
+<!-- 			<button type="button" class="btn btn-default" ng-click="popPanel()">
+				Pop a panel
+			</button>
+ -->			<hr  />
+
+			<!-- Getting started -->
+			<h3>Getting Started</h3>
+			<p>Git clone, download the project at <a href="https://github.com/FIlburtTurtle/Angular-Carousel3D">https://github.com/FIlburtTurtle/Angular-Carousel3D</a>, or bower install angular-carousel3d. Include angular-carousel3d.css and angular-carousel3d.js as shown below.  </p>
+
+			<!-- Inclusion of scripts -->
+			<section style="font-size:10px">
+
+			  	<div ui-codemirror="{
+			      lineNumbers: true,
+			      theme:'twilight',
+			      readOnly: 'nocursor',
+			      lineWrapping : true,
+			      mode: 'xml'
+			    }"
+>&lt;link rel="stylesheet" href="stylesheets/Angular-Carousel3D.css"  /&gt;
+&lt;script src="bower_components/angular/angular.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/Angular-Carousel3D.js"&gt;&lt;/script&gt;</div>
+
+			</section>
+			<br  />
+
+			<!-- Injecting the module -->
+			<p>When instantiating your angular module include Carousel3D as a dependency to use the directive.</p>
+
+			<section style="font-size:10px">
+
+			  	<div ui-codemirror="{
+			      lineNumbers: true,
+			      theme:'twilight',
+			      readOnly: 'nocursor',
+			      lineWrapping : true,
+			      mode: 'javascript'
+			    }"
+>var example = angular.module('example', ['Carousel3D']);
+
+example.controller...</div>
+
+			</section>
 			<hr  />
-			<button class="btn btn-default" ng-click="rotate(1)">rotate forward</button>
+
+			<!-- Using the directive -->
+			<h3>Using the directive</h3>
+			<p>Include a carousel3d element in your project with some of the configuration options.</p>
+
+			<section style="font-size:10px">
+
+			  	<div ui-codemirror="{
+			      lineNumbers: true,
+			      theme:'twilight',
+			      readOnly: 'nocursor',
+			      lineWrapping : true,
+			      mode: 'xml'
+			    }"
+>&lt;!-- 3d Carousel directive --&gt;
+
+&lt;!-- Options --&gt;
+&lt;!-- Rotate : exposes the directive's rotate method --&gt;
+&lt;!-- Rotateto : rotates to a specific index in the panels array --&gt;
+&lt;!-- toggleAxis : the toggle axis method to toggle the carousels axis --&gt;
+&lt;!-- percentHeight : set the max height of the panels (0-1) --&gt;
+
+&lt;carousel3d rotate="rotate" 
+	rotateto="rotateto" 
+	panels="panels" 
+	toggle-axis="toggleAxis" 
+	toggle-backface="toggleBackface"
+	percent-height='.50'&gt;
+&lt;/carousel3d&gt;
+
+&lt;!-- template for 3d carousel directive --&gt;
+&lt;!-- create a script template with the id of panel3d.html to create a customized panel for the template --&gt;
+
+&lt;script type="text/ng-template" id="panel3d.html"&gt;
+    &lt;div class="view" style="padding:20px"&gt;
+        &lt;h2 style="color:white" &gt;pane number {{panel}}&lt;/h2&gt;
+    &lt;/div&gt;
+&lt;/script&gt;
+
+&lt;!-- the panel object is derived from the panels attr you pass to the carousel3d directive --&gt;</div>
+
+			</section>
+			<hr  />
+
+			<!-- Using the directive -->
+			<h3>Directive attributes</h3>
 			<br  />
+			<p><b>rotate</b> : Hey hey</p>
+			<p><b>rotateto</b> : Hey hey</p>
+			<p><b>toggleAxis</b> : Hey hey</p>
+			<p><b>percentHeight</b> : Hey hey</p>
+			<p><b>panels</b> : Hey hey</p>
+			<p><b>actOnAllPanels</b> : Hey hey</p>
 			<br  />
-			<button class="btn btn-default" ng-click="rotate(-1)">rotate back</button>
+			<hr  />
+
+			<!-- Using the directive -->
+			<h3>Custom panels</h3>
 			<br  />
+			<p>Include a ng-template with an id of panel3d.html and it will be included at the template for the carousel.</p>
 			<br  />
-			<button class="btn btn-default" ng-click="toggleAxis()">flip axis</button>
+
 		</div>
 
-		<div class="col-md-8">
+		<!-- Main Example Column -->
+
+		<div class="col-md-7 col-sm-12">
 			<!-- 3d Carousel directive -->
 			<!-- Options -->
 			<!-- Rotate : exposes the directive's rotate method to be used in the controllers scope -->
@@ -32,27 +154,20 @@
 						rotateto="rotateto" 
 						panels="panels" 
 						toggle-axis="toggleAxis" 
+						toggle-backface="toggleBackface"
 						percent-height='.50'>
 			</carousel3d>
 
 			<!-- template for 3d carousel directive -->
 			<!-- create a script template with the id of panel.html to create a customized panel for the template -->
-			<script type="text/ng-template" id="panel.html">
-			    <div class="view">
-			        <h2>{{panel}}</h2>
+			<script type="text/ng-template" id="panel3d.html">
+			    <div class="view" style="padding:20px">
+			        <h2 style="color:white">pane number {{panel}}</h2>
 			    </div>
 			</script>
+
 		</div>
 			
-	</div>
-
-	<hr  />
-
-	<div class="row">
-		<div class="col-md-4">
-			<h3>Getting Started</h3>
-			<p>Please git clone or download the project at <a href="https://github.com/FIlburtTurtle/Angular-Carousel3D">https://github.com/FIlburtTurtle/Angular-Carousel3D</a>. Include the two scripts,  in the dist folder, angular-carousel3d.css and angular-carousel3d.js after your angularjs include. When instantiating your angular module include Carousel3D as a dependency to use the directive. </p>
-		</div>
 	</div>
 
 	<br  />

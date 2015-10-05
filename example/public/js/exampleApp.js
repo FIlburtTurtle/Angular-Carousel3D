@@ -1,12 +1,18 @@
 
-var example = angular.module('example', ['ngRoute','Carousel3D'])
-
-
+var example = angular.module('example', ['ngRoute','Carousel3D', 'ui.codemirror'])
 
 .controller('mainController', ['$scope', '$http', '$location', '$window',
 	function($scope, $http, $location, $window){
 
 	$scope.panels = [1,2,3,4,5,6,7]
+
+	$scope.addPanel = function(){
+		$scope.panels.push($scope.panels.length + 1)
+	}
+
+	$scope.popPanel = function(){
+		$scope.panels.pop()
+	}
 
 	function detect3d(){
 		var detect = document.createElement("div");

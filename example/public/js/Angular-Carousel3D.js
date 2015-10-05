@@ -93,6 +93,7 @@ Carousel3D.directive('carousel3d', ['$window', '$location', 'builder', '$documen
 			rotateto: '=',
 			toggleAxis: '=',
 			actOnAllPanels: '=',
+			toggleBackface: '=',
 		},
 		link: function($scope, element, attrs) {
 
@@ -165,7 +166,7 @@ Carousel3D.directive('carousel3d', ['$window', '$location', 'builder', '$documen
 			}
 
 			$scope.toggleBackface = function(){
-				carousel.element.toggleClass('panels-backface-invisible');
+				$scope.hideBackface = !$scope.hideBackface;
 			}
 
 		}],
@@ -186,6 +187,6 @@ Carousel3D.directive('carousel3d', ['$window', '$location', 'builder', '$documen
       scope.panel = scope.panelData
       console.log(scope.panelData);
     },
-    templateUrl: 'panel.html'
+    templateUrl: 'panel3d.html'
   };
 });
