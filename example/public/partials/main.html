@@ -6,8 +6,7 @@
 
 			<h1>Angular Carousel3D</h1>
 			<p>
-				An AngularJS carousel directive in 3D using HTML5 3D transformations. Meant to be lightweight and 
-				flexible for many projects. Just thought that the current 3D carousels were to rigid in the way they were built!
+				A simple 3D AngularJS carousel directive in using 3D transformations based on the work done by https://github.com/desandro/3dtransforms. Meant to be lightweight and flexible for projects where WebGL is not needed. Just thought that the current 3D carousels were to rigid in the way they were built, this directive allows you to create the template you use within the carousel.
 			</p>
 			<hr  />
 
@@ -73,7 +72,21 @@
 			    }"
 >var example = angular.module('example', ['Carousel3D']);
 
-example.controller...</div>
+example.controller('mainController', ['$scope',
+	function($scope){
+
+	$scope.panels = [1,2,3,4,5,6,7]
+
+	$scope.addPanel = function(){
+		$scope.panels.push($scope.panels.length + 1)
+	}
+
+	$scope.popPanel = function(){
+		$scope.panels.pop()
+	}
+
+}])
+</div>
 
 			</section>
 			<hr  />
@@ -112,7 +125,7 @@ example.controller...</div>
 
 &lt;script type="text/ng-template" id="panel3d.html"&gt;
     &lt;div class="view" style="padding:20px"&gt;
-        &lt;h2 style="color:white" &gt;pane number {{panel}}&lt;/h2&gt;
+        &lt;h2 style="color:white" &gt;panel number {{panel}}&lt;/h2&gt;
     &lt;/div&gt;
 &lt;/script&gt;
 
@@ -124,19 +137,26 @@ example.controller...</div>
 			<!-- Using the directive -->
 			<h3>Directive attributes</h3>
 			<br  />
-			<p><b>rotate</b> : Hey hey</p>
-			<p><b>rotateto</b> : Hey hey</p>
-			<p><b>toggleAxis</b> : Hey hey</p>
-			<p><b>percentHeight</b> : Hey hey</p>
-			<p><b>panels</b> : Hey hey</p>
-			<p><b>actOnAllPanels</b> : Hey hey</p>
+			<p><b>rotate(positions_to_rotate)</b> : <br  /> Exposes the rotate function in the directive to the controller, it takes an integer that will rotate the carousel a number of panels. Eg. -1 will rotate back one and 20 will rotate 20 slides forward</p>
+			<p><b>rotateto(position_index)</b> : <br  /> Exposes the rotateto function to the controller, takes an integer that rotates to the specified index in the panels array.</p>
+			<p><b>toggleAxis</b> : <br  /> Exposes the function which rotates the carousel's axis</p>
+			<p><b>percentHeight</b> : <br  /> determines the height of each individual slide, default if 80% of innerHeight</p>
+			<p><b>panels</b> : <br  /> the array that you pass to the directive through scope, this panels array is watched by the directive and will change when the panels array changes in the controller</p>
+			<p><b>actOnAllPanels(key, value)</b> : <br  /> Utility function to alter all of the objects in the panels array. It will set all objects with a key and a value.</p>
 			<br  />
 			<hr  />
 
-			<!-- Using the directive -->
+			<!-- Using custom panels -->
 			<h3>Custom panels</h3>
 			<br  />
 			<p>Include a ng-template with an id of panel3d.html and it will be included at the template for the carousel.</p>
+
+			<hr  />
+
+			<!-- Contributing -->
+			<h3>Contributing</h3>
+			<br  />
+			<p>Want to contribute to the project? Email me at rafael@toeverywhere.net with any questions, fork the repo, play around with it, write some tests, and submit a merge request! See the project here  <a href="https://github.com/FIlburtTurtle/Angular-Carousel3D">https://github.com/FIlburtTurtle/Angular-Carousel3D</a></p>
 			<br  />
 
 		</div>
@@ -162,7 +182,7 @@ example.controller...</div>
 			<!-- create a script template with the id of panel.html to create a customized panel for the template -->
 			<script type="text/ng-template" id="panel3d.html">
 			    <div class="view" style="padding:20px">
-			        <h2 style="color:white">pane number {{panel}}</h2>
+			        <h2 style="color:white">panel number {{panel}}</h2>
 			    </div>
 			</script>
 

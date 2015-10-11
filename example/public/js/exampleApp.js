@@ -4,7 +4,7 @@ var example = angular.module('example', ['ngRoute','Carousel3D', 'ui.codemirror'
 .controller('mainController', ['$scope', '$http', '$location', '$window',
 	function($scope, $http, $location, $window){
 
-	$scope.panels = [1,2,3,4,5,6,7]
+	$scope.panels = [0,1,2,3,4,5,6,7,8,9,10]
 
 	$scope.addPanel = function(){
 		$scope.panels.push($scope.panels.length + 1)
@@ -27,6 +27,10 @@ var example = angular.module('example', ['ngRoute','Carousel3D', 'ui.codemirror'
 	}
 
 	detect3d();
+
+	setTimeout(function(){
+		$scope.rotateto(4)
+	}, 500)
 
 }])
 

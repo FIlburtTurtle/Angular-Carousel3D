@@ -1,0 +1,24 @@
+{
+  "name": "Angular-Carousel3D",
+  "main": "Angular-Carousel3D.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/FIlburtTurtle/Angular-Carousel3D",
+  "authors": [
+    "Rafael Ancheta rafael@toeverywhere.net"
+  ],
+  "ignore" : [
+    "example"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "modernizr": "~3.1.0"
+  },
+  "description": "A customizable 3d carousel angular directive",
+  "moduleType": [],
+  "keywords": [
+    "angularjs",
+    "carousel",
+    "3d"
+  ],
+  "license": "MIT"
+}

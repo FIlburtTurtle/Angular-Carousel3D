@@ -1,21 +1,34 @@
-// API wrapper to get edmodo results in angular
-var Carousel3D = angular.module('Carousel3D', ['ngTouch', 'EdmodoAngular'])
+//Version 0.0.1
+//Maintainer : Rafael Ancheta
+//Email : rafael@toeverywhere.net
 
-Carousel3D.factory('builder', [ '$window', function($window){
+//Angular module for a 3D Carousel, include this script after angularjs and before you initialize
+//your angular module, include 'Carousel3D' as a dependency in your module to use the directive
+//thoughout your project.
+var Carousel3D = angular.module('Carousel3D', [])
+
+//Inject modernizr as a constant
+Carousel3D.constant("Modernizr", Modernizr);
+
+//Builder for our carousel
+//initialize a carousel object used by the directive
+Carousel3D.factory('builder', [ '$window', 'Modernizr', function($window, Modernizr){
 
 	var transformProp = Modernizr.prefixed('transform');
 
 	function Carousel3D ( el ) {
+		//find the wrapper element of the carousel and set default values
 		this.element = angular.element(angular.element(el).find('div'));
 		this.rotation = 0;
 		this.panelCount = 0;
 		this.totalPanelCount = this.element.children().length;
 		this.theta = 0;
-
+		//Default axis
 		this.isHorizontal = false;
 
 	}
 
+	//If modifying the carousel size set new angles for each panel
 	Carousel3D.prototype.modify = function() {
 
 		var panel, angle, i;
@@ -32,10 +45,11 @@ Carousel3D.factory('builder', [ '$window', function($window){
 		this.radius = Math.round( ( this.panelSize / 2) / Math.tan( Math.PI / this.panelCount ) );
 
 		for ( i = 0; i < this.panelCount; i++ ) {
+			//For each panel in the container apply color and transform props
 			panel = angular.element(this.element.children()[i]);
 			angle = this.theta * i;
 			panel.css('opacity', 1);
-			panel.css('background-color', 'hsla(' + angle + ', 100%, 100%, 0.95)');
+			panel.css('background-color', 'hsla(' + angle + ', 100%, 50%, 0.8)');
 			// rotate panel, then push it out in 3D space
 			panel.css(transformProp, this.rotateFn + '(' + angle + 'deg) translateZ(' + this.radius + 'px)');
 		}
@@ -64,56 +78,62 @@ Carousel3D.factory('builder', [ '$window', function($window){
 
 }])
 
+//Directive to create a new 3d carousel
+Carousel3D.directive('carousel3d', ['$window', '$location', 'builder', '$document',
+	function($window, $location, builder, $document){
 
-Carousel3D.directive('carousel3d', [ '$window', '$location', 'builder', '$document', 'edmodoApi',
-	function($window, $location, builder, $document, edmodoApi){
+	var carousel, container;
+
 	return {
 		restrict: 'E',
 		transclude: true,
 		scope: {
-			carousel: '=',
+			panels: '=',
 			rotate: '=',
 			rotateto: '=',
 			toggleAxis: '=',
-			showSubmissions: '=',
+			actOnAllPanels: '=',
+			toggleBackface: '=',
 		},
 		link: function($scope, element, attrs) {
 
-			var carousel = new builder(element);
-			var container = angular.element(element).children()[0];
-			var edmodoAPI = new edmodoApi(null, null)
+			carousel = new builder(element);
+			container = angular.element(element).children()[0];
 			$scope.current_index = 0;
 			angular.element(container).css('height', $window.innerHeight * attrs.percentHeight || 0.8)
 
-			$scope.closeAllAssigments = function(){
-				for (var i = 0; i < $scope.carousel.length; i++) {
-					$scope.carousel[i].submissionView = false;
-					$scope.carousel[i].submissions = [];
-				};
-			}
+			$scope.$watch('panels', function(newValue, oldValue) {
+                if (newValue)
+                    $scope.changeNumberOfPanels(newValue.length);
+                if (newValue.length < 3) {
+                	$scope.hideBackface = true;
+                } else {
+                	$scope.hideBackface = false;
+                }
+            }, true);
 
-			$scope.changePath = function(assignment_id){
-				if (assignment_id) {
-					$location.search('assignment_id', assignment_id)
-				} else {
-					$location.search('assignment_id', null)
-				}
+			setTimeout( function(){
+				// populate on startup
+				$scope.changeNumberOfPanels($scope.panels.length);
+				angular.element(element).addClass('ready');
+			}, 0);
+
+		},
+		controller : ['$scope', function($scope){
+
+			$scope.actOnAllPanels = function(key, value){
+				for (var i = 0; i < $scope.panels.length; i++) {
+					$scope.panels[i][key] = value;
+				};
 			}
 
 			$scope.rotate = function(increment){
 				$scope.current_index = $scope.current_index + increment;
-				if ($scope.current_index > $scope.carousel.length -1) {
+				if ($scope.current_index > $scope.panels.length - 1) {
 					$scope.current_index = 0;
 				};
 				carousel.rotation += carousel.theta * increment * -1;
 				carousel.transform();
-				$scope.closeAllAssigments()
-				var pane = $scope.carousel[$scope.current_index]
-				if (pane && pane.id) {
-					$scope.changePath(pane.id)
-				} else {
-					$scope.changePath(null)
-				}
 			}
 
 			$scope.rotateto = function(index){
@@ -127,17 +147,10 @@ Carousel3D.directive('carousel3d', [ '$window', '$location', 'builder', '$docume
 				}
 
 				$scope.current_index = $scope.current_index + increment
-				if ($scope.current_index > $scope.carousel.length -1) {
+				if ($scope.current_index > $scope.panels.length -1) {
 					$scope.current_index = 0;
 				};
 
-				var pane = $scope.carousel[$scope.current_index]
-				if (pane && pane.id) {
-					$scope.changePath(pane.id)
-				} else {
-					$scope.changePath(null)
-				}
-				$scope.closeAllAssigments()
 				carousel.rotation += carousel.theta * increment * -1;
 				carousel.transform();
 			}
@@ -147,41 +160,33 @@ Carousel3D.directive('carousel3d', [ '$window', '$location', 'builder', '$docume
 				carousel.modify();
 			}
 
-			$scope.showSubmissions = function(assignment_id, page, per_page, loading){
-				$scope.submissionLoading = loading;
-				edmodoAPI.getSubmissions({assignment_id : assignment_id, page : 0, per_page : 100 }, function(result){
-					$scope.submissions = result;
-					$scope.submissionLoading = false;
-				});
-			}
-
 			$scope.changeNumberOfPanels = function(numPanels){
 				carousel.panelCount = numPanels || $scope.panelCount;
 				carousel.modify();
 			}
 
 			$scope.toggleBackface = function(){
-				carousel.element.toggleClass('panels-backface-invisible');
+				$scope.hideBackface = !$scope.hideBackface;
 			}
 
-			$scope.$watch('carousel', function(newValue, oldValue) {
-                if (newValue)
-                    $scope.changeNumberOfPanels(newValue.length);
-                if (newValue.length < 3) {
-                	$scope.hideBackface = true;
-                } else {
-                	$scope.hideBackface = false;
-                }
-            }, true);
-
-			setTimeout( function(){
-				// populate on startup
-				$scope.changeNumberOfPanels($scope.carousel.length);
-				angular.element(element).addClass('ready');
-			}, 0);
-
-		},
+		}],
 		templateUrl: '/partials/carousel.html'
 	};
 
 }])
+
+.directive('panel3d', function() {
+  return {
+    require: '^carousel3d',
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      panelData : '='
+    },
+    link: function(scope, element, attrs, carouselCtrl) {
+      scope.panel = scope.panelData
+      console.log(scope.panelData);
+    },
+    templateUrl: 'panel3d.html'
+  };
+});
